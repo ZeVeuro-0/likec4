@@ -4,9 +4,14 @@ import babel from '@rolldown/plugin-babel'
 import { TanStackRouterVite } from '@tanstack/router-vite-plugin'
 import react, { reactCompilerPreset } from '@vitejs/plugin-react'
 import { resolve } from 'path'
+import process from 'node:process'
 import { defineConfig } from 'vite'
-import { $, fs } from 'zx'
+import { $, fs, usePowerShell } from 'zx'
 import packageJson from './package.json' with { type: 'json' }
+
+if (process.platform === 'win32') {
+  usePowerShell()
+}
 
 $.quiet = false
 $.verbose = true
