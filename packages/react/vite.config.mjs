@@ -5,8 +5,12 @@ import { resolve } from 'node:path'
 import process from 'node:process'
 import { defineConfig } from 'vite'
 import dts from 'vite-plugin-dts'
-import { $, fs } from 'zx'
+import { $, fs, usePowerShell } from 'zx'
 import packageJson from './package.json' with { type: 'json' }
+
+if (process.platform === 'win32') {
+  usePowerShell()
+}
 
 $.quiet = false
 $.verbose = true
