@@ -35,45 +35,52 @@ export const Route = createFileRoute('/_single/single-index')({
 function RouteComponent() {
   const allViews = useLikeC4Views()
   const { landingPage, title: projectTitle } = useCurrentProject()
+  const { host } = Route.useSearch()
+  const windowsHosted = host === 'windows'
   useDocumentTitle(projectTitle ?? pageTitle)
   const views = filterLandingPageViews(allViews, landingPage)
   return (
     <Container size={'xl'}>
       <SidebarDrawer />
       <div
+        data-likec4-host={windowsHosted ? 'windows' : undefined}
         className={css({
           containerName: 'likec4-root',
           containerType: 'inline-size',
           display: 'flex',
           alignItems: 'flex-start',
           justifyContent: 'space-between',
-          padding: 'xs',
+          padding: windowsHosted ? '1' : 'xs',
           gap: 'xs',
           position: 'sticky',
           top: '0',
           zIndex: '10',
-          backgroundColor: 'likec4.panel.bg/85',
-          backdropFilter: 'blur(8px)',
+          backgroundColor: windowsHosted ? 'likec4.panel.bg/55' : 'likec4.panel.bg/85',
+          backdropFilter: windowsHosted ? 'blur(4px)' : 'blur(8px)',
         })}
       >
         <NavigationPanel.Root css={{ position: 'relative', width: 'max-content', margin: '0' }}>
           <NavigationPanel.Body>
-            <div style={{ width: 0, height: 36 }} aria-hidden />
-            <Burger size="sm" onClick={SidebarDrawerOps.open} aria-label="Toggle navigation" />
-            <NavigationPanel.Logo
-              css={{ flexShrink: 0 }}
-              onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
-            />
+            {!windowsHosted && <div style={{ width: 0, height: 36 }} aria-hidden />}
+            <Burger size="sm" onClick={SidebarDrawerOps.open} aria-label="Toggle diagram navigation" />
+            {!windowsHosted && (
+              <NavigationPanel.Logo
+                css={{ flexShrink: 0 }}
+                onClick={() => window.scrollTo({ top: 0, behavior: 'smooth' })}
+              />
+            )}
             <OverviewSearch />
           </NavigationPanel.Body>
         </NavigationPanel.Root>
-        <NavigationPanel.Root panelPosition="right" css={{ position: 'relative', margin: '0' }}>
-          <NavigationPanel.Body>
-            <div style={{ display: 'flex', alignItems: 'center', minHeight: 36 }}>
-              <ColorSchemeToggle />
-            </div>
-          </NavigationPanel.Body>
-        </NavigationPanel.Root>
+        {!windowsHosted && (
+          <NavigationPanel.Root panelPosition="right" css={{ position: 'relative', margin: '0' }}>
+            <NavigationPanel.Body>
+              <div style={{ display: 'flex', alignItems: 'center', minHeight: 36 }}>
+                <ColorSchemeToggle />
+              </div>
+            </NavigationPanel.Body>
+          </NavigationPanel.Root>
+        )}
       </div>
       <SimpleGrid
         p={{ base: 'md', sm: 'md' }}
