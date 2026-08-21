@@ -5,6 +5,9 @@ export const searchParamsSchema = z.object({
   theme: z.literal(['light', 'dark', 'auto'])
     .optional()
     .catch(undefined),
+  host: z.literal('windows')
+    .optional()
+    .catch(undefined),
   dynamic: z.enum(['diagram', 'sequence'])
     .default('diagram')
     .catch('diagram'),
